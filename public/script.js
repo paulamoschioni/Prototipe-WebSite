@@ -85,7 +85,7 @@ const data = {
   const botoes = document.querySelectorAll(".btn-detalhes");
 
   // B.3:
-  formatPrice(produtos){
+  function formatPrice(preco){
     return "R$ " + preco.toFixed(2);
   }
 
@@ -96,6 +96,7 @@ const data = {
 
     //criando elementos do card
     card.style.border = document.createElement("h3");
+    const titulo = document.createElement("h3");
     titulo.classList.add("card-title");
     titulo.textContent = produto.nome;
     const preco = document.createElement("p");
@@ -104,15 +105,19 @@ const data = {
     botao.textContent = "Ver detalhes";
     botao.classList.add("btn-detalhes");
 
+    botao.addEventListener("click", () => {
+    showProductDetails(produto);
+    });
     card.appendChild(titulo);
     card.appendChild(preco);
     card.appendChild(botao);
-  
+    
+    
     return card;
   }
 
   function renderProducts(produtos){
-    productLisT.innerHTML = "";  //limpa lista
+    productList.innerHTML = "";  //limpa lista
   
     produtos.forEach(produto => {
       const card = createProductCard(produto);
@@ -125,11 +130,11 @@ const data = {
     //criar opcao todas
     const todas = document.createElement("option");  
     todas.value = "Todas";
-
+todas.textContent = "Todas";
     categorySelect.appendChild(todas);
 
     //descobrir categorias sem repetir
-    const categoria = [];
+    const categorias = [];
     data.produtos.forEach(produto => {
       if(!categorias.includes(produto.categoria))
       {
@@ -137,5 +142,37 @@ const data = {
       }
 
     })
+    categorias.forEach(categoria => {
+      const option = document.createElement("option");
+      option.value = categoria;
+      option.textContent = categoria;
+      categorySelect.appendChild(option);
+    })
+
+  }
+  renderCategories();
+
+  function showProductDetails(produto){
+    const status = produto.emEstoque ? "Em estoque" : "Esgotado";
+
+    productDetails.innerHTML = `
+    <img src="${produto.imagem}" alt="${produto.nome}">
+    <h2>${produto.nome}</h2>
+    <p><strong>Preço:</strong> ${formatPrice(produto.preco)}</p>
+    <p><strong>Categoria:</strong> ${produto.categoria}</p>
+    <p><strong>Estoque:</strong> ${status}</p>
+    <p>${produto.descricao}</p>
+  `;
+  }
+
+  function filterProducts(){
+    const texto = searchInput.value.toLowerCase().trim(); //pega na caxa de pesquisa, passa para letra min e tira espacos
+    const categoria = categorySelect.value;
+    return data.produtos.filter(produto => {
+      const nomeBate = produto.nome.toLowerCase().includes(texto);
+      const catgoriaBate = categoria === "Todas" || produto.categoria === categoria;
+      return nomeBate && categoriaBate;
+    });
+
 
   }
