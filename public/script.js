@@ -1,3 +1,5 @@
+const { createElement } = require("react");
+
 const data = {
     "produtos": [
       {
@@ -82,7 +84,6 @@ const data = {
   const searchInput = document.querySelector("#search");
   const categorySelect = document.querySelector("#category");
 
-  const botoes = document.querySelectorAll(".btn-detalhes");
 
   // B.3:
   function formatPrice(preco){
@@ -95,7 +96,6 @@ const data = {
     card.setAttribute("data-id", produto.id);
 
     //criando elementos do card
-    card.style.border = document.createElement("h3");
     const titulo = document.createElement("h3");
     titulo.classList.add("card-title");
     titulo.textContent = produto.nome;
@@ -122,6 +122,14 @@ const data = {
     produtos.forEach(produto => {
       const card = createProductCard(produto);
       productList.appendChild(card);
+    });
+
+    // B.5
+    const cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+      console.log("Card renderizado, id:"), card.data.id;
+      card.computedStyleMap.transmition = "transform 0.2s";
     });
   }
   
@@ -170,9 +178,70 @@ todas.textContent = "Todas";
     const categoria = categorySelect.value;
     return data.produtos.filter(produto => {
       const nomeBate = produto.nome.toLowerCase().includes(texto);
-      const catgoriaBate = categoria === "Todas" || produto.categoria === categoria;
+      const categoriaBate = categoria === "Todas" || produto.categoria === categoria;
       return nomeBate && categoriaBate;
     });
 
 
   }
+  
+  // B.4:
+  function createProductCard(produto){
+    const card = document.createElement("div");
+    card.classList.add("card");
+    card.setAttribute("data-id", produto.id);
+
+    //criando elementos do card
+    const imagem = document.createElement("img");
+    imagem.src = produto.imagem;
+    imagem.alt = produto.nome;
+
+    const titulo = document.createElement("h2");
+    titulo.classList.add("card-title");
+    titulo.alt = produto.nome;
+
+    const preco = document.createElement("p");
+    preco.textContent = formatPrice(produto.preco);
+
+    const categoria = document.createElement("p");
+    categoria.textContent = produto.categoria;
+
+    const botao = document.createElement("button");
+    botao.textContent = "Ver detalhes";
+    botao.classList.add("btn-detalhes");
+
+    const botaoDestacar = document.createElement("button");
+    botaoDestacar.textContent = "Destacar";
+
+    botao.addEventListener("click", () => {    //quando alguem clicar, executa isso
+      showProductDetails(produto);
+    });
+
+    card.appendChild(imagem);
+    card.appendChild(titulo);
+    card.appendChild(preco);
+    card.appendChild(categoria);
+    card.appendChild(botao);
+    card.appendChild(botaoDestacar);
+
+    return card;
+  }
+
+  const rendBtn = document.querySelectorAll("#render-btn");
+
+ searchInput.addEventListener("input", () =>{
+  renderProducts(filterProducts());
+ });
+
+ categorySelect.addEventListener("change", () => {
+  renderProducts(filterProducts());
+ });
+
+ categorySelect.addEventListener("click", () => {
+  renderProducts(filterProducts());
+ });
+
+ renderProducts(data.produtos);  //mostra todos ao abrir a pagina
+
+
+ // B.5
