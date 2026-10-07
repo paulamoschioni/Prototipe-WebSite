@@ -1,0 +1,51 @@
+.destaque {
+  border: 3px solid #7c3aed;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+if (card.classList.contains("highlight")) {
+  card.classList.remove("highlight");
+} else {
+  card.classList.add("highlight");
+}
+
+/* Lista de produtos em grid */
+#product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Cada card */
+.card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  background-color: #fff;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 6px;
+}
+
+.card button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/*botão "Destacar"*/
+.highlight {
+  border: 3px solid #7c3aed;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+  background-color: #f5f0ff;
+}
