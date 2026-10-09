@@ -30,6 +30,16 @@ if (card.classList.contains("highlight")) {
   background-color: #fff;
 }
 
+.card {
+  background-color: transparent;
+}
+
+.card.destacado {
+ /* mix-blend-mode: multiply; */
+ background-color: rgb(212, 237, 245);
+}
+
+
 .card img {
   width: 100%;
   border-radius: 6px;
